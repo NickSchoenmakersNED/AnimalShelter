@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -12,28 +11,61 @@ namespace AnimalShelter
 {
     public partial class AdministrationForm : Form
     {
-        /// <summary>
-        /// The (only) animal in this administration (for now....)
-        /// </summary>
         private Animal animal;
+        private List<Animal> animals;
 
-        /// <summary>
-        /// Creates the form for doing adminstrative tasks
-        /// </summary>
         public AdministrationForm()
         {
             InitializeComponent();
             CmbAnimalType.SelectedIndex = 0;
-            animal = null;
+            animals = new List<Animal>();
+            LbxAnimals.DisplayMember = nameof(Animal.ToString);
         }
 
-        /// <summary>
-        /// Create an Animal object and store it in the administration.
-        /// If "Dog" is selected in the animalTypeCombobox then a Dog object should be created.
-        /// If "Cat" is selected in the animalTypeCombobox then a Cat object should be created.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        private bool Add(Animal newAnimal)
+        {
+            foreach (Animal animal in animals)
+            {
+                if (animal.ChipRegistrationNumber == newAnimal.ChipRegistrationNumber)
+                {
+                    return false;
+                }
+            }
+            animals.Add(newAnimal);
+            return true;
+        }
+
+        private bool RemoveAnimal(int chipRegistrationNumber)
+        {
+            Animal toRemove = null;
+            foreach (Animal animal in animals)
+            {
+                if (animal.ChipRegistrationNumber == chipRegistrationNumber)
+                {
+                    toRemove = animal;
+                    break;
+                }
+            }
+            if (toRemove != null)
+            {
+                animals.Remove(toRemove);
+                return true;
+            }
+            return false;
+        }
+
+        private Animal FindAnimal(int chipRegistrationNumber)
+        {
+            foreach (Animal animal in animals)
+            {
+                if (animal.ChipRegistrationNumber == chipRegistrationNumber)
+                {
+                    return animal;
+                }
+            }
+            return null;
+        }
+
         private void createAnimalButton_Click(object sender, EventArgs e)
         {
             string animalType = CmbAnimalType.SelectedItem.ToString().ToLower();
@@ -42,17 +74,21 @@ namespace AnimalShelter
 
             if (!int.TryParse(TxbChipNumber.Text, out chipNumber))
             {
-                MessageBox.Show("Invalid chip number. Please enter a valid integer.");
+                MessageBox.Show("Invalid chip number. Please enter a valid number.");
                 return;
             }
 
-            // For demo purposes: replace with actual input
+            if (FindAnimal(chipNumber) != null)
+            {
+                MessageBox.Show("Chip number already exists. Please generate a new number.");
+                return;
+            }
+
             SimpleDate dateOfBirth = new SimpleDate(1, 1, 2020);
+            Animal newAnimal = null;
 
             if (animalType == "dog")
             {
-                // Special field is a date
-                // Attempt to parse the date in format dd-mm-yyyy
                 try
                 {
                     string[] parts = TxbSpecialField.Text.Split('-');
@@ -60,7 +96,7 @@ namespace AnimalShelter
                     int month = int.Parse(parts[1]);
                     int year = int.Parse(parts[2]);
                     SimpleDate lastWalk = new SimpleDate(day, month, year);
-                    animal = new Dog(chipNumber, dateOfBirth, name, lastWalk);
+                    newAnimal = new Dog(chipNumber, dateOfBirth, name, lastWalk);
                 }
                 catch
                 {
@@ -71,7 +107,7 @@ namespace AnimalShelter
             else if (animalType == "cat")
             {
                 string badHabits = TxbSpecialField.Text;
-                animal = new Cat(chipNumber, dateOfBirth, name, badHabits);
+                newAnimal = new Cat(chipNumber, dateOfBirth, name, badHabits);
             }
             else
             {
@@ -79,16 +115,21 @@ namespace AnimalShelter
                 return;
             }
 
-            // Clear previous and add new to listbox
-            LbxAnimals.Items.Clear();
-            LbxAnimals.Items.Add(animal.ToString());
+            if (!Add(newAnimal))
+            {
+                MessageBox.Show("Failed to add animal. Chip number may already exist.");
+                return;
+            }
+
+            LbxAnimals.DataSource = null;
+            LbxAnimals.DataSource = animals;
         }
 
         private void showInfoButton_Click(object sender, EventArgs e)
         {
-            if (animal != null)
+            if (LbxAnimals.SelectedItem != null)
             {
-                MessageBox.Show(animal.ToString());
+                MessageBox.Show(LbxAnimals.SelectedItem.ToString());
             }
             else
             {
@@ -99,10 +140,8 @@ namespace AnimalShelter
         private void BtnChipNumberGenerator_Click(object sender, EventArgs e)
         {
             Random random = new Random();
-
             int min = 1;
             int max = 9999;
-
             TxbChipNumber.Text = random.Next(min, max).ToString();
         }
 
@@ -119,6 +158,28 @@ namespace AnimalShelter
                 default:
                     LblLastWalk.Text = string.Empty;
                     break;
+            }
+        }
+
+        private void BtnDeleteAnimal_Click(object sender, EventArgs e)
+        {
+            if (LbxAnimals.SelectedItem is Animal selectedAnimal)
+            {
+                if (RemoveAnimal(selectedAnimal.ChipRegistrationNumber))
+                {
+                    MessageBox.Show("Animal removed.");
+                }
+                else
+                {
+                    MessageBox.Show("No animal found with that chip number.");
+                }
+
+                LbxAnimals.DataSource = null;
+                LbxAnimals.DataSource = animals;
+            }
+            else
+            {
+                MessageBox.Show("Please select an animal to remove.");
             }
         }
     }

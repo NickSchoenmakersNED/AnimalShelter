@@ -40,6 +40,9 @@
             this.BtnChipNumberGenerator = new System.Windows.Forms.Button();
             this.LblLastWalk = new System.Windows.Forms.Label();
             this.TxbSpecialField = new System.Windows.Forms.TextBox();
+            this.GrbManage = new System.Windows.Forms.GroupBox();
+            this.BtnDeleteAnimal = new System.Windows.Forms.Button();
+            this.GrbManage.SuspendLayout();
             this.SuspendLayout();
             // 
             // CmbAnimalType
@@ -49,7 +52,7 @@
             this.CmbAnimalType.Items.AddRange(new object[] {
             "Cat",
             "Dog"});
-            this.CmbAnimalType.Location = new System.Drawing.Point(13, 34);
+            this.CmbAnimalType.Location = new System.Drawing.Point(17, 53);
             this.CmbAnimalType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CmbAnimalType.Name = "CmbAnimalType";
             this.CmbAnimalType.Size = new System.Drawing.Size(180, 28);
@@ -58,10 +61,10 @@
             // 
             // createAnimalButton
             // 
-            this.createAnimalButton.Location = new System.Drawing.Point(614, 23);
+            this.createAnimalButton.Location = new System.Drawing.Point(618, 42);
             this.createAnimalButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.createAnimalButton.Name = "createAnimalButton";
-            this.createAnimalButton.Size = new System.Drawing.Size(96, 35);
+            this.createAnimalButton.Size = new System.Drawing.Size(112, 35);
             this.createAnimalButton.TabIndex = 1;
             this.createAnimalButton.Text = "Create";
             this.createAnimalButton.UseVisualStyleBackColor = true;
@@ -69,7 +72,7 @@
             // 
             // showInfoButton
             // 
-            this.showInfoButton.Location = new System.Drawing.Point(718, 23);
+            this.showInfoButton.Location = new System.Drawing.Point(618, 85);
             this.showInfoButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.showInfoButton.Name = "showInfoButton";
             this.showInfoButton.Size = new System.Drawing.Size(112, 35);
@@ -90,7 +93,7 @@
             // LblTypeAnimal
             // 
             this.LblTypeAnimal.AutoSize = true;
-            this.LblTypeAnimal.Location = new System.Drawing.Point(9, 9);
+            this.LblTypeAnimal.Location = new System.Drawing.Point(13, 28);
             this.LblTypeAnimal.Name = "LblTypeAnimal";
             this.LblTypeAnimal.Size = new System.Drawing.Size(43, 20);
             this.LblTypeAnimal.TabIndex = 4;
@@ -99,7 +102,7 @@
             // LblAnimalName
             // 
             this.LblAnimalName.AutoSize = true;
-            this.LblAnimalName.Location = new System.Drawing.Point(196, 11);
+            this.LblAnimalName.Location = new System.Drawing.Point(200, 30);
             this.LblAnimalName.Name = "LblAnimalName";
             this.LblAnimalName.Size = new System.Drawing.Size(51, 20);
             this.LblAnimalName.TabIndex = 5;
@@ -107,7 +110,7 @@
             // 
             // TxbAnimalName
             // 
-            this.TxbAnimalName.Location = new System.Drawing.Point(200, 34);
+            this.TxbAnimalName.Location = new System.Drawing.Point(204, 53);
             this.TxbAnimalName.Name = "TxbAnimalName";
             this.TxbAnimalName.Size = new System.Drawing.Size(100, 26);
             this.TxbAnimalName.TabIndex = 6;
@@ -115,7 +118,7 @@
             // LblChipNumber
             // 
             this.LblChipNumber.AutoSize = true;
-            this.LblChipNumber.Location = new System.Drawing.Point(305, 9);
+            this.LblChipNumber.Location = new System.Drawing.Point(309, 28);
             this.LblChipNumber.Name = "LblChipNumber";
             this.LblChipNumber.Size = new System.Drawing.Size(95, 20);
             this.LblChipNumber.TabIndex = 7;
@@ -123,14 +126,14 @@
             // 
             // TxbChipNumber
             // 
-            this.TxbChipNumber.Location = new System.Drawing.Point(309, 32);
+            this.TxbChipNumber.Location = new System.Drawing.Point(313, 51);
             this.TxbChipNumber.Name = "TxbChipNumber";
             this.TxbChipNumber.Size = new System.Drawing.Size(146, 26);
             this.TxbChipNumber.TabIndex = 8;
             // 
             // BtnChipNumberGenerator
             // 
-            this.BtnChipNumberGenerator.Location = new System.Drawing.Point(309, 66);
+            this.BtnChipNumberGenerator.Location = new System.Drawing.Point(313, 85);
             this.BtnChipNumberGenerator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.BtnChipNumberGenerator.Name = "BtnChipNumberGenerator";
             this.BtnChipNumberGenerator.Size = new System.Drawing.Size(146, 68);
@@ -143,7 +146,7 @@
             // LblLastWalk
             // 
             this.LblLastWalk.AutoSize = true;
-            this.LblLastWalk.Location = new System.Drawing.Point(457, 9);
+            this.LblLastWalk.Location = new System.Drawing.Point(461, 28);
             this.LblLastWalk.Name = "LblLastWalk";
             this.LblLastWalk.Size = new System.Drawing.Size(104, 20);
             this.LblLastWalk.TabIndex = 10;
@@ -151,33 +154,56 @@
             // 
             // TxbSpecialField
             // 
-            this.TxbSpecialField.Location = new System.Drawing.Point(461, 32);
+            this.TxbSpecialField.Location = new System.Drawing.Point(465, 51);
             this.TxbSpecialField.Name = "TxbSpecialField";
             this.TxbSpecialField.Size = new System.Drawing.Size(146, 26);
             this.TxbSpecialField.TabIndex = 11;
+            // 
+            // GrbManage
+            // 
+            this.GrbManage.Controls.Add(this.BtnDeleteAnimal);
+            this.GrbManage.Controls.Add(this.showInfoButton);
+            this.GrbManage.Controls.Add(this.TxbSpecialField);
+            this.GrbManage.Controls.Add(this.CmbAnimalType);
+            this.GrbManage.Controls.Add(this.LblLastWalk);
+            this.GrbManage.Controls.Add(this.createAnimalButton);
+            this.GrbManage.Controls.Add(this.BtnChipNumberGenerator);
+            this.GrbManage.Controls.Add(this.LblTypeAnimal);
+            this.GrbManage.Controls.Add(this.TxbChipNumber);
+            this.GrbManage.Controls.Add(this.LblAnimalName);
+            this.GrbManage.Controls.Add(this.LblChipNumber);
+            this.GrbManage.Controls.Add(this.TxbAnimalName);
+            this.GrbManage.Location = new System.Drawing.Point(12, 12);
+            this.GrbManage.Name = "GrbManage";
+            this.GrbManage.Size = new System.Drawing.Size(819, 175);
+            this.GrbManage.TabIndex = 12;
+            this.GrbManage.TabStop = false;
+            this.GrbManage.Text = "Manage";
+            // 
+            // BtnDeleteAnimal
+            // 
+            this.BtnDeleteAnimal.Location = new System.Drawing.Point(618, 130);
+            this.BtnDeleteAnimal.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnDeleteAnimal.Name = "BtnDeleteAnimal";
+            this.BtnDeleteAnimal.Size = new System.Drawing.Size(112, 35);
+            this.BtnDeleteAnimal.TabIndex = 12;
+            this.BtnDeleteAnimal.Text = "Delete";
+            this.BtnDeleteAnimal.UseVisualStyleBackColor = true;
+            this.BtnDeleteAnimal.Click += new System.EventHandler(this.BtnDeleteAnimal_Click);
             // 
             // AdministrationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1308, 503);
-            this.Controls.Add(this.TxbSpecialField);
-            this.Controls.Add(this.LblLastWalk);
-            this.Controls.Add(this.BtnChipNumberGenerator);
-            this.Controls.Add(this.TxbChipNumber);
-            this.Controls.Add(this.LblChipNumber);
-            this.Controls.Add(this.TxbAnimalName);
-            this.Controls.Add(this.LblAnimalName);
-            this.Controls.Add(this.LblTypeAnimal);
+            this.Controls.Add(this.GrbManage);
             this.Controls.Add(this.LbxAnimals);
-            this.Controls.Add(this.showInfoButton);
-            this.Controls.Add(this.createAnimalButton);
-            this.Controls.Add(this.CmbAnimalType);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "AdministrationForm";
             this.Text = "Form1";
+            this.GrbManage.ResumeLayout(false);
+            this.GrbManage.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -195,6 +221,8 @@
         private System.Windows.Forms.Button BtnChipNumberGenerator;
         private System.Windows.Forms.Label LblLastWalk;
         private System.Windows.Forms.TextBox TxbSpecialField;
+        private System.Windows.Forms.GroupBox GrbManage;
+        private System.Windows.Forms.Button BtnDeleteAnimal;
     }
 }
 
