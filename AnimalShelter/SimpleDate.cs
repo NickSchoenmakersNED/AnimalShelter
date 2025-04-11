@@ -1,77 +1,54 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AnimalShelter
 {
-    /// <summary>
-    /// A simple class to store dates.
-    /// 
-    /// This class is called SimpleDate because it's a simplyfied version of 
-    /// the .Net DateTime object. SimpleDate hides the more complex interface of DateTime
-    /// and makes it easy to  work with dates only.
-    /// </summary>
     public class SimpleDate
     {
-        private DateTime date;
+        public DateTime Date { get; set; }
 
-        /// <summary>
-        /// Creates a SimpleDate object whicht stores the given date.
-        /// </summary>
-        /// <param name="day">The day of the month</param>
-        /// <param name="month">The month of the year</param>
-        /// <param name="year">The year</param>
+        public SimpleDate() => Date = DateTime.MinValue;
+
         public SimpleDate(int day, int month, int year)
         {
-            date = new DateTime(year, month, day);
+            Date = new DateTime(year, month, day);
         }
 
-        /// <summary>
-        /// The day of the month
-        /// </summary>
-        public int Day
+        public SimpleDate(DateTime dateTime)
         {
-            get { return date.Day; }
+            Date = dateTime;
         }
 
-        /// <summary>
-        /// The month of the year
-        /// </summary>
-        public int Month
+        public int Day => Date.Day;
+        public int Month => Date.Month;
+        public int Year => Date.Year;
+
+        public static SimpleDate CurrentDate => new SimpleDate(DateTime.Now);
+
+        public string CalculateAge(SimpleDate currentDate)
         {
-            get { return date.Month; }
+            int years = currentDate.Year - Year;
+            int months = currentDate.Month - Month;
+            int days = currentDate.Day - Day;
+
+            if (days < 0)
+            {
+                months--;
+                days += DateTime.DaysInMonth(currentDate.Year,
+                    currentDate.Month == 1 ? 12 : currentDate.Month - 1);
+            }
+
+            if (months < 0)
+            {
+                years--;
+                months += 12;
+            }
+
+            return $"{years:D4}-{months:D2}-{days:D2}";
         }
 
-        /// <summary>
-        /// The year
-        /// </summary>
-        public int Year
-        {
-            get { return date.Year; }
-        }
-
-        /// <summary>
-        /// Get the tumber of days between this objects date and the given date.
-        /// </summary>
-        /// <param name="date">The end date.</param>
-        /// <returns>The number of days between this date and endDate.</returns>
-        public int DaysDifference(SimpleDate date) 
-        {
-            TimeSpan timespan = date.date.Subtract(this.date);
-            return timespan.Days;
-        }
-
-        /// <summary>
-        /// Returns the date info in the form DD-MM-YYYY (e.g. "04-11-2013").
-        /// 
-        /// Note: Every class inherits (automagically) from the 'Object' class,
-        /// which contains the virtual ToString method which you can override for your own good.
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
-            return date.ToString("dd-MM-yyyy");
+            return Date.ToString("dd-MM-yyyy");
         }
     }
 }

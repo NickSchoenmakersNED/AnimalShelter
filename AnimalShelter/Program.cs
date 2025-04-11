@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnimalShelter.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,13 @@ namespace AnimalShelter
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new AdministrationForm());
+            using (var context = new AnimalShelterDbContext())
+            {
+                // uncomment when you want to reset the database
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+                DatabaseSeeder.Seed(context);
+            }
         }
     }
 }
