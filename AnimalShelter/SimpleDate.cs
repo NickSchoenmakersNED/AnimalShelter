@@ -43,7 +43,7 @@ namespace AnimalShelter
                 months += 12;
             }
 
-            return $"{years:D4}-{months:D2}-{days:D2}";
+            return $"{years} years, {months} and {days} days";
         }
 
         public override string ToString()

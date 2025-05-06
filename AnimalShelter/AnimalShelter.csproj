@@ -225,6 +225,10 @@
     <Compile Include="Classes\Animal.cs" />
     <Compile Include="Classes\Cat.cs" />
     <Compile Include="Classes\Dog.cs" />
+    <Compile Include="Classes\Horse.cs" />
+    <Compile Include="Classes\HorseType.cs" />
+    <Compile Include="Classes\Lizard.cs" />
+    <Compile Include="Classes\Parrot.cs" />
     <Compile Include="Data\DatabaseSeeder.cs" />
     <Compile Include="Data\AnimalShelterDbContext.cs" />
     <Compile Include="Data\DbContextProvider.cs" />

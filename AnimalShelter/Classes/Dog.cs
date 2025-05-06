@@ -10,7 +10,7 @@ namespace AnimalShelter
         public SimpleDate LastWalkDate { get; set; }
         public bool GuideDog { get; set; }
         public Dog() : base() { } // for Entity framework. this needs to be done otherwise it whines about the simpledate
-        public Dog(int chipRegistrationNumber, SimpleDate dateOfBirth, string name, SimpleDate lastWalkDate) : base(chipRegistrationNumber, dateOfBirth, name)
+        public Dog(SimpleDate dateOfBirth, string name, SimpleDate lastWalkDate) : base(dateOfBirth, name)
         {
             LastWalkDate = lastWalkDate;
         }

@@ -13,6 +13,7 @@ namespace AnimalShelter.Classes
 
         public Administration(AnimalShelterDbContext context)
         {
+            this.context = context;
             context.Database.EnsureCreated();
         }
 
@@ -28,9 +29,9 @@ namespace AnimalShelter.Classes
             return true;
         }
 
-        public bool RemoveAnimal(int chipRegistrationNumber)
+        public bool RemoveAnimal(int id)
         {
-            var animal = context.Animals.FirstOrDefault(a => a.Id == chipRegistrationNumber);
+            var animal = context.Animals.FirstOrDefault(a => a.Id == id);
             if (animal == null)
             {
                 return false;
@@ -44,6 +45,19 @@ namespace AnimalShelter.Classes
         public Animal FindAnimal(int id)
         {
             return context.Animals.FirstOrDefault(a => a.Id == id);
+        }
+
+        public string GetAnimalType(Animal animal) 
+        {
+            switch (animal.GetType().Name)
+            {
+                case "Dog":
+                    return "LastWalkDate";
+                case "Cat":
+                    return "BadHabits";
+                default:
+                    return null;
+            }
         }
     }
 }

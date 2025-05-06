@@ -9,7 +9,7 @@ namespace AnimalShelter
     {
         public string BadHabits { get; set; }
         public Cat() : base() { } // for Entity framework. this needs to be done otherwise it whines about the simpledate
-        public Cat(int chipRegistrationNumber, SimpleDate dateOfBirth, string name, string badHabits) : base(chipRegistrationNumber, dateOfBirth, name)
+        public Cat(SimpleDate dateOfBirth, string name, string badHabits) : base(dateOfBirth, name)
         {
             BadHabits = badHabits;
         }

@@ -14,9 +14,9 @@ namespace AnimalShelter
         public string Name { get; set; }
         public bool IsReserved { get; set; }
         protected Animal() { } // for Entity framework. this needs to be done otherwise it whines about the simpledate
-        public Animal(int id, SimpleDate dateOfBirth, string name)
+        public int? LocationId { get; set; } // will be for the Json/XML file (havent decided yet). this will not be nessesairy and for stability we will keep it nullable (at least for now).
+        public Animal(SimpleDate dateOfBirth, string name)
         {
-            Id = id;
             DateOfBirth = dateOfBirth;
             Name = name;
             IsReserved = false;

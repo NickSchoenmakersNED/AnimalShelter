@@ -10,14 +10,14 @@ namespace AnimalShelterUnitTests
         [TestMethod]
         public void CatCreation()
         {
+            // i have to do some stuff with id here.
             int chipNumber = 123;
             var dob = new SimpleDate(10, 5, 2015);
             string name = "Whiskers";
             string badHabits = "Scratches furniture";
 
-            Cat cat = new Cat(chipNumber, dob, name, badHabits);
+            Cat cat = new Cat(dob, name, badHabits);
 
-            Assert.AreEqual(chipNumber, cat.Id);
             Assert.AreEqual(dob, cat.DateOfBirth);
             Assert.AreEqual(name, cat.Name);
             Assert.AreEqual(badHabits, cat.BadHabits);
@@ -27,7 +27,7 @@ namespace AnimalShelterUnitTests
         [TestMethod]
         public void ToString_IsNotReserved_WithBadHabits()
         {
-            var cat = new Cat(456, new SimpleDate(15, 3, 2020), "Luna", "Bites cables");
+            var cat = new Cat(new SimpleDate(15, 3, 2020), "Luna", "Bites cables");
 
             string result = cat.ToString();
 
@@ -38,7 +38,7 @@ namespace AnimalShelterUnitTests
         [TestMethod]
         public void ToString_WhenReserved_NoBadHabits()
         {
-            var cat = new Cat(789, new SimpleDate(1, 1, 2018), "Milo", "none");
+            var cat = new Cat(new SimpleDate(1, 1, 2018), "Milo", "none");
             cat.IsReserved = true;
 
             string result = cat.ToString();
@@ -50,7 +50,7 @@ namespace AnimalShelterUnitTests
         [TestMethod]
         public void ToString_EmptyBadHabits()
         {
-            var cat = new Cat(321, new SimpleDate(25, 12, 2019), "Snowball", "");
+            var cat = new Cat(new SimpleDate(25, 12, 2019), "Snowball", "");
             string expected = "Cat: 321, 25-12-2019, Snowball, not reserved, ";
 
             string result = cat.ToString();
@@ -61,7 +61,7 @@ namespace AnimalShelterUnitTests
         [TestMethod]
         public void InheritsFromAnimal()
         {
-            Cat cat = new Cat(999, new SimpleDate(5, 5, 2017), "Felix", "none");
+            Cat cat = new Cat(new SimpleDate(5, 5, 2017), "Felix", "none");
 
             Assert.IsInstanceOfType(cat, typeof(Animal));
         }

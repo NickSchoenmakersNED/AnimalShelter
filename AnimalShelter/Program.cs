@@ -15,9 +15,6 @@ namespace AnimalShelter
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AdministrationForm());
             using (var context = new AnimalShelterDbContext())
             {
                 // uncomment when you want to reset the database
@@ -25,6 +22,9 @@ namespace AnimalShelter
                 context.Database.EnsureCreated();
                 DatabaseSeeder.Seed(context);
             }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new AdministrationForm());
         }
     }
 }

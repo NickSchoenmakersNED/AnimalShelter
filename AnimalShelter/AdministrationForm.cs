@@ -47,17 +47,6 @@ namespace AnimalShelter
         {
             string animalType = CmbAnimalType.SelectedItem.ToString().ToLower();
             string name = TxbAnimalName.Text;
-            if (!int.TryParse(TxbChipNumber.Text, out int chipNumber))
-            {
-                MessageBox.Show("Invalid chip number.");
-                return;
-            }
-
-            if (context.Animals.Any(a => a.Id == chipNumber))
-            {
-                MessageBox.Show("Chip number already exists.");
-                return;
-            }
 
             string[] splitDate = TxbDateOfBirth.Text.Split('-');
             SimpleDate dateOfBirth = null;
@@ -87,9 +76,19 @@ namespace AnimalShelter
                     {
                         dateOfBirth = new SimpleDate(day, month, year);
                     }
-                    catch
+                    catch (ArgumentOutOfRangeException ex)
                     {
-                        MessageBox.Show("Date of birth is invalid. Please check the day, month, and year values.");
+                        MessageBox.Show("One or more date values are out of range. Please ensure the day, month, and or year are valid numbers.");
+                        return;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        MessageBox.Show($"Invalid date: {ex.Message}");
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"An unexpected error occurred: {ex.Message}");
                         return;
                     }
                 }
@@ -106,16 +105,19 @@ namespace AnimalShelter
             {
                 try
                 {
-                    string[] parts = TxbSpecialField.Text.Split('-');
+                    string[] parts = TxbSpecialField1.Text.Split('-');
                     SimpleDate lastWalk = new SimpleDate(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
-                    newAnimal = new Dog(chipNumber, dateOfBirth, name, lastWalk);
+                    newAnimal = new Dog(dateOfBirth, name, lastWalk);
                 }
-                catch { MessageBox.Show("Invalid walk date format."); return; }
+                catch(Exception ex) { 
+                    MessageBox.Show("Invalid walk date format."); 
+                    return; 
+                }
             }
             else if (animalType == "cat")
             {
-                string badHabits = TxbSpecialField.Text;
-                newAnimal = new Cat(chipNumber, dateOfBirth, name, badHabits);
+                string badHabits = TxbSpecialField1.Text;
+                newAnimal = new Cat(dateOfBirth, name, badHabits);
             }
 
             admin.AddAnimal(newAnimal);
@@ -165,18 +167,21 @@ namespace AnimalShelter
         private void showInfoButton_Click(object sender, EventArgs e)
         {
             var animal = LbxAnimalsNotReserved.SelectedItem as Animal;
-            MessageBox.Show(animal != null ? animal.ToString() : "No animal selected.");
-        }
 
-        private void BtnChipNumberGenerator_Click(object sender, EventArgs e)
-        {
-            Random random = new Random();
-            TxbChipNumber.Text = random.Next(1, 9999).ToString();
+            if (animal != null)
+            {
+                MessageBox.Show(animal.ToString());
+            }
+            else
+            {
+                animal = LbxAnimalsReserved.SelectedItem as Animal;
+                MessageBox.Show(animal.ToString());
+            }
         }
 
         private void CmbAnimalType_SelectedValueChanged(object sender, EventArgs e)
         {
-            LblLastWalk.Text = CmbAnimalType.Text == "Dog" ? "Last walked" : "Bad behaviour";
+            LblSpecialField1.Text = CmbAnimalType.Text == "Dog" ? "Last walked" : "Bad behaviour";
         }
 
         private void BtnCalculateAge_Click(object sender, EventArgs e)
@@ -193,6 +198,15 @@ namespace AnimalShelter
         {
             LbxAnimalsReserved.SelectedValueChanged -= LbxAnimalsReserved_SelectedValueChanged;
             LbxAnimalsReserved.ClearSelected();
+
+            Animal selected = LbxAnimalsReserved.SelectedItem as Animal ?? LbxAnimalsNotReserved.SelectedItem as Animal;
+            if (LbxAnimalsNotReserved.SelectedItems.Count == 1)
+            {
+                CmbAnimalType.Text = selected.GetType().Name;
+                TxbAnimalName.Text = selected.Name;
+
+
+            }
             LbxAnimalsReserved.SelectedValueChanged += LbxAnimalsReserved_SelectedValueChanged;
         }
 
