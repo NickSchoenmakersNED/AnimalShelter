@@ -9,7 +9,7 @@ namespace AnimalShelter.Classes
 {
     public class Horse : Animal
     {
-        public int HorseTypeId { get; set; } // Foreign Key
+        public int HorseTypeId { get; set; }
 
         [ForeignKey("HorseTypeId")]
         public HorseType Type { get; set; }
@@ -18,12 +18,21 @@ namespace AnimalShelter.Classes
 
         public Horse(SimpleDate dateOfBirth, string name, HorseType type) : base(dateOfBirth, name)
         {
-            Type = type;
+            try
+            {
+                Type = type;
+                HorseTypeId = type.Id;
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine($"Error creating Horse: {ex.Message}");
+                throw;
+            }
         }
 
         public override string ToString()
         {
-            return $"Horse: {Id}, {DateOfBirth}, {Name}, {(IsReserved ? "reserved" : "not reserved")}, Type: {Type?.Name}";
+            return $"Horse: {Id}, {DateOfBirth}, {Name}, {(IsReserved ? "reserved" : "not reserved")}, Type: {Type.Name}";
         }
     }
 }

@@ -1,10 +1,14 @@
 ﻿using AnimalShelter.Classes;
 using AnimalShelter.Data;
+using AnimalShelter.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Windows.Forms;
 
 namespace AnimalShelter
@@ -16,6 +20,11 @@ namespace AnimalShelter
 
         private ToolTip toolTip = new ToolTip();
 
+        private readonly string filePathToLocations = Path.Combine(AppContext.BaseDirectory, "Locations.json");
+
+        // https://stackoverflow.com/questions/670566/path-combine-absolute-with-relative-path-strings
+        // https://stackoverflow.com/questions/6041332/best-way-to-get-application-folder-path
+
         public AdministrationForm()
         {
             InitializeComponent();
@@ -24,6 +33,12 @@ namespace AnimalShelter
             context.Database.EnsureCreated();
             admin = new Administration(context);
             RefreshListboxes();
+
+            List<Location> locations = admin.LoadLocations();
+
+            LbxLocations.DataSource = locations;
+            LbxLocations.DisplayMember = "Name"; 
+            LbxLocations.ValueMember = "ID";    
         }
 
         private void RefreshListboxes()
@@ -32,10 +47,12 @@ namespace AnimalShelter
             LbxAnimalsReserved.DataSource = null;
 
             LbxAnimalsNotReserved.DataSource = context.Animals
+                .Include(a => (a as Horse).Type)
                 .Where(a => !a.IsReserved)
                 .ToList();
 
             LbxAnimalsReserved.DataSource = context.Animals
+                .Include(a => (a as Horse).Type)
                 .Where(a => a.IsReserved)
                 .ToList();
 
@@ -227,6 +244,87 @@ namespace AnimalShelter
         private void LblDateOfBirth_MouseLeave(object sender, EventArgs e)
         {
             toolTip.Hide((Control)sender);
+        }
+
+        private void BtnAddLocation_Click(object sender, EventArgs e)
+        {
+            string name = TxbLocation.Text;
+            admin.AddLocation(name);
+            TxbLocation.Clear();
+
+            MessageBox.Show("Location added.");
+
+            List<Location> locations = admin.LoadLocations();
+
+            LbxLocations.DataSource = locations;
+        }
+
+        private void BtnDeleteLocation_Click(object sender, EventArgs e)
+        {
+            List<Location> locations = admin.LoadLocations();
+
+            var selectedId = Convert.ToInt32(LbxLocations.SelectedValue);
+            var locationToDelete = locations.FirstOrDefault(obj => obj.ID == selectedId);
+            LbxLocations.DataSource = locations;
+            // https://stackoverflow.com/questions/44173337/delete-json-data-inside-property-based-on-id-in-c-sharp
+            if (locationToDelete != null)
+            {
+                locations.Remove(locationToDelete);
+                var updatedJson = JsonSerializer.Serialize(locations, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(filePathToLocations, updatedJson);
+            }
+
+            locations = admin.LoadLocations();
+            LbxLocations.DataSource = locations;
+        }
+
+        private void BtnChangeLocation_Click(object sender, EventArgs e)
+        {
+            List<Location> locations = admin.LoadLocations();
+
+            var selectedId = Convert.ToInt32(LbxLocations.SelectedValue);
+            var locationToDelete = locations.FirstOrDefault(obj => obj.ID == selectedId);
+
+            var animal = LbxAnimalsNotReserved.SelectedItem as Animal;
+
+            if (animal == null)
+            {
+                animal = LbxAnimalsReserved.SelectedItem as Animal;
+            }
+
+            animal.LocationId = selectedId;
+
+            MessageBox.Show(animal.LocationId.ToString());
+
+            context.SaveChanges();
+        }
+
+        private void BtnLocationAnimals_Click(object sender, EventArgs e)
+        {
+            var selectedLocationId = Convert.ToInt32(LbxLocations.SelectedValue);
+            MessageBox.Show(selectedLocationId.ToString());
+            LbxAnimalsNotReserved.DataSource = context.Animals
+                .Include(a => (a as Horse).Type)
+                .Where(a => !a.IsReserved && a.LocationId == selectedLocationId)
+                .ToList();
+
+            LbxAnimalsReserved.DataSource = context.Animals
+                .Include(a => (a as Horse).Type)
+                .Where(a => a.IsReserved && a.LocationId  == selectedLocationId)
+                .ToList();
+        }
+
+        private void BtnShowAllAnimals_Click(object sender, EventArgs e)
+        {
+            LbxAnimalsNotReserved.DataSource = context.Animals
+                .Include(a => (a as Horse).Type)
+                .Where(a => !a.IsReserved)
+                .ToList();
+
+            LbxAnimalsReserved.DataSource = context.Animals
+                .Include(a => (a as Horse).Type)
+                .Where(a => a.IsReserved)
+                .ToList();
         }
     }
 }

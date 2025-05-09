@@ -49,7 +49,13 @@
             this.BtnReserve = new System.Windows.Forms.Button();
             this.BtnReserveCancel = new System.Windows.Forms.Button();
             this.LblRoom = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.LbxLocations = new System.Windows.Forms.ListBox();
+            this.TxbLocation = new System.Windows.Forms.TextBox();
+            this.BtnAddLocation = new System.Windows.Forms.Button();
+            this.BtnChangeLocation = new System.Windows.Forms.Button();
+            this.BtnDeleteLocation = new System.Windows.Forms.Button();
+            this.BtnLocationAnimals = new System.Windows.Forms.Button();
+            this.BtnShowAllAnimals = new System.Windows.Forms.Button();
             this.GrbManage.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -99,7 +105,7 @@
             this.LbxAnimalsNotReserved.Location = new System.Drawing.Point(12, 323);
             this.LbxAnimalsNotReserved.Name = "LbxAnimalsNotReserved";
             this.LbxAnimalsNotReserved.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.LbxAnimalsNotReserved.Size = new System.Drawing.Size(304, 264);
+            this.LbxAnimalsNotReserved.Size = new System.Drawing.Size(495, 264);
             this.LbxAnimalsNotReserved.TabIndex = 3;
             this.LbxAnimalsNotReserved.SelectedValueChanged += new System.EventHandler(this.LbxAnimalsNotReserved_SelectedValueChanged);
             // 
@@ -159,7 +165,7 @@
             this.GrbManage.Controls.Add(this.TxbAnimalName);
             this.GrbManage.Location = new System.Drawing.Point(12, 12);
             this.GrbManage.Name = "GrbManage";
-            this.GrbManage.Size = new System.Drawing.Size(1256, 273);
+            this.GrbManage.Size = new System.Drawing.Size(1431, 273);
             this.GrbManage.TabIndex = 12;
             this.GrbManage.TabStop = false;
             this.GrbManage.Text = "Manage";
@@ -170,7 +176,7 @@
             this.groupBox1.Controls.Add(this.TxbSpecialField1);
             this.groupBox1.Location = new System.Drawing.Point(663, 15);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(587, 206);
+            this.groupBox1.Size = new System.Drawing.Size(762, 206);
             this.groupBox1.TabIndex = 16;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Special fields";
@@ -219,10 +225,10 @@
             // 
             this.LbxAnimalsReserved.FormattingEnabled = true;
             this.LbxAnimalsReserved.ItemHeight = 20;
-            this.LbxAnimalsReserved.Location = new System.Drawing.Point(477, 323);
+            this.LbxAnimalsReserved.Location = new System.Drawing.Point(513, 323);
             this.LbxAnimalsReserved.Name = "LbxAnimalsReserved";
             this.LbxAnimalsReserved.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.LbxAnimalsReserved.Size = new System.Drawing.Size(308, 264);
+            this.LbxAnimalsReserved.Size = new System.Drawing.Size(424, 264);
             this.LbxAnimalsReserved.TabIndex = 13;
             this.LbxAnimalsReserved.SelectedValueChanged += new System.EventHandler(this.LbxAnimalsReserved_SelectedValueChanged);
             // 
@@ -238,7 +244,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(473, 300);
+            this.label2.Location = new System.Drawing.Point(509, 300);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 20);
             this.label2.TabIndex = 14;
@@ -256,7 +262,7 @@
             // 
             // BtnReserveCancel
             // 
-            this.BtnReserveCancel.Location = new System.Drawing.Point(477, 593);
+            this.BtnReserveCancel.Location = new System.Drawing.Point(513, 593);
             this.BtnReserveCancel.Name = "BtnReserveCancel";
             this.BtnReserveCancel.Size = new System.Drawing.Size(106, 32);
             this.BtnReserveCancel.TabIndex = 16;
@@ -267,29 +273,92 @@
             // LblRoom
             // 
             this.LblRoom.AutoSize = true;
-            this.LblRoom.Location = new System.Drawing.Point(931, 300);
+            this.LblRoom.Location = new System.Drawing.Point(939, 300);
             this.LblRoom.Name = "LblRoom";
-            this.LblRoom.Size = new System.Drawing.Size(112, 20);
+            this.LblRoom.Size = new System.Drawing.Size(78, 20);
             this.LblRoom.TabIndex = 18;
-            this.LblRoom.Text = "Available room";
+            this.LblRoom.Text = "Locations";
             // 
-            // listBox1
+            // LbxLocations
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 20;
-            this.listBox1.Location = new System.Drawing.Point(935, 323);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBox1.Size = new System.Drawing.Size(361, 264);
-            this.listBox1.TabIndex = 17;
+            this.LbxLocations.FormattingEnabled = true;
+            this.LbxLocations.ItemHeight = 20;
+            this.LbxLocations.Location = new System.Drawing.Point(943, 323);
+            this.LbxLocations.Name = "LbxLocations";
+            this.LbxLocations.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.LbxLocations.Size = new System.Drawing.Size(500, 264);
+            this.LbxLocations.TabIndex = 17;
+            // 
+            // TxbLocation
+            // 
+            this.TxbLocation.Location = new System.Drawing.Point(943, 603);
+            this.TxbLocation.Name = "TxbLocation";
+            this.TxbLocation.Size = new System.Drawing.Size(146, 26);
+            this.TxbLocation.TabIndex = 18;
+            // 
+            // BtnAddLocation
+            // 
+            this.BtnAddLocation.Location = new System.Drawing.Point(943, 639);
+            this.BtnAddLocation.Name = "BtnAddLocation";
+            this.BtnAddLocation.Size = new System.Drawing.Size(146, 34);
+            this.BtnAddLocation.TabIndex = 19;
+            this.BtnAddLocation.Text = "Add location";
+            this.BtnAddLocation.UseVisualStyleBackColor = true;
+            this.BtnAddLocation.Click += new System.EventHandler(this.BtnAddLocation_Click);
+            // 
+            // BtnChangeLocation
+            // 
+            this.BtnChangeLocation.Location = new System.Drawing.Point(1095, 639);
+            this.BtnChangeLocation.Name = "BtnChangeLocation";
+            this.BtnChangeLocation.Size = new System.Drawing.Size(146, 34);
+            this.BtnChangeLocation.TabIndex = 20;
+            this.BtnChangeLocation.Text = "Add to location";
+            this.BtnChangeLocation.UseVisualStyleBackColor = true;
+            this.BtnChangeLocation.Click += new System.EventHandler(this.BtnChangeLocation_Click);
+            // 
+            // BtnDeleteLocation
+            // 
+            this.BtnDeleteLocation.Location = new System.Drawing.Point(1095, 599);
+            this.BtnDeleteLocation.Name = "BtnDeleteLocation";
+            this.BtnDeleteLocation.Size = new System.Drawing.Size(146, 34);
+            this.BtnDeleteLocation.TabIndex = 21;
+            this.BtnDeleteLocation.Text = "Delete location";
+            this.BtnDeleteLocation.UseVisualStyleBackColor = true;
+            this.BtnDeleteLocation.Click += new System.EventHandler(this.BtnDeleteLocation_Click);
+            // 
+            // BtnLocationAnimals
+            // 
+            this.BtnLocationAnimals.Location = new System.Drawing.Point(1247, 599);
+            this.BtnLocationAnimals.Name = "BtnLocationAnimals";
+            this.BtnLocationAnimals.Size = new System.Drawing.Size(196, 34);
+            this.BtnLocationAnimals.TabIndex = 22;
+            this.BtnLocationAnimals.Text = "Show animals in location";
+            this.BtnLocationAnimals.UseVisualStyleBackColor = true;
+            this.BtnLocationAnimals.Click += new System.EventHandler(this.BtnLocationAnimals_Click);
+            // 
+            // BtnShowAllAnimals
+            // 
+            this.BtnShowAllAnimals.Location = new System.Drawing.Point(1247, 639);
+            this.BtnShowAllAnimals.Name = "BtnShowAllAnimals";
+            this.BtnShowAllAnimals.Size = new System.Drawing.Size(196, 34);
+            this.BtnShowAllAnimals.TabIndex = 23;
+            this.BtnShowAllAnimals.Text = "Show all animals";
+            this.BtnShowAllAnimals.UseVisualStyleBackColor = true;
+            this.BtnShowAllAnimals.Click += new System.EventHandler(this.BtnShowAllAnimals_Click);
             // 
             // AdministrationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1308, 749);
+            this.ClientSize = new System.Drawing.Size(1455, 749);
+            this.Controls.Add(this.BtnShowAllAnimals);
+            this.Controls.Add(this.BtnLocationAnimals);
+            this.Controls.Add(this.BtnDeleteLocation);
+            this.Controls.Add(this.BtnChangeLocation);
+            this.Controls.Add(this.BtnAddLocation);
+            this.Controls.Add(this.TxbLocation);
             this.Controls.Add(this.LblRoom);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.LbxLocations);
             this.Controls.Add(this.BtnReserveCancel);
             this.Controls.Add(this.BtnReserve);
             this.Controls.Add(this.label2);
@@ -332,7 +401,13 @@
         private System.Windows.Forms.Label LblDateOfBirth;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label LblRoom;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox LbxLocations;
+        private System.Windows.Forms.TextBox TxbLocation;
+        private System.Windows.Forms.Button BtnAddLocation;
+        private System.Windows.Forms.Button BtnChangeLocation;
+        private System.Windows.Forms.Button BtnDeleteLocation;
+        private System.Windows.Forms.Button BtnLocationAnimals;
+        private System.Windows.Forms.Button BtnShowAllAnimals;
     }
 }
 

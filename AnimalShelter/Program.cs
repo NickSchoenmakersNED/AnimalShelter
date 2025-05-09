@@ -18,7 +18,7 @@ namespace AnimalShelter
             using (var context = new AnimalShelterDbContext())
             {
                 // uncomment when you want to reset the database
-                context.Database.EnsureDeleted();
+                // context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
                 DatabaseSeeder.Seed(context);
             }
