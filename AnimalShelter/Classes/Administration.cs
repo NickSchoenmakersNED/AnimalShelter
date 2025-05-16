@@ -29,7 +29,9 @@ namespace AnimalShelter.Classes
         // --------------------------------------------------------------------------------------------------------------
         public bool AddAnimal(Animal animal)
         {
-            if (context.Animals.Any(a => a.Id == animal.Id))
+            var animalId = animal.Id;
+
+            if (context.Animals.Any(a => a.Id == animalId))
             {
                 return false;
             }
@@ -63,18 +65,6 @@ namespace AnimalShelter.Classes
             return context.Animals.FirstOrDefault(a => a.Id == id);
         }
 
-        public string GetAnimalType(Animal animal) 
-        {
-            switch (animal.GetType().Name)
-            {
-                case "Dog":
-                    return "LastWalkDate";
-                case "Cat":
-                    return "BadHabits";
-                default:
-                    return null;
-            }
-        }
         // --------------------------------------------------------------------------------------------------------------
         // Locations managed below
         // --------------------------------------------------------------------------------------------------------------

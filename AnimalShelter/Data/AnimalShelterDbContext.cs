@@ -9,7 +9,7 @@ using AnimalShelter.Classes;
 
 namespace AnimalShelter
 {
-    public class AnimalShelterDbContext: DbContext
+    public class AnimalShelterDbContext : DbContext
     {
         public DbSet<Animal> Animals { get; set; }
         public DbSet<Cat> Cats { get; set; }
@@ -19,9 +19,22 @@ namespace AnimalShelter
         public DbSet<Parrot> Parrots { get; set; }
         public DbSet<Lizard> Lizards { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        public AnimalShelterDbContext() : base()
         {
-            options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=AnimalShelterDb;Trusted_Connection=True;");
+        }
+
+        public AnimalShelterDbContext(DbContextOptions<AnimalShelterDbContext> options)
+            : base(options)
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=AnimalShelterDb;Trusted_Connection=True;");
+                optionsBuilder.EnableSensitiveDataLogging();
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,14 +49,12 @@ namespace AnimalShelter
             modelBuilder.Entity<Animal>().Property(a => a.DateOfBirth).HasConversion(simpleDateConverter);
             modelBuilder.Entity<Dog>().Property(d => d.LastWalkDate).HasConversion(simpleDateConverter);
 
-            // Inheritance configuration
             modelBuilder.Entity<Cat>().HasBaseType<Animal>();
             modelBuilder.Entity<Dog>().HasBaseType<Animal>();
             modelBuilder.Entity<Horse>().HasBaseType<Animal>();
             modelBuilder.Entity<Parrot>().HasBaseType<Animal>();
             modelBuilder.Entity<Lizard>().HasBaseType<Animal>();
 
-            // Seed HorseType
             modelBuilder.Entity<HorseType>().HasData(
                 new HorseType { Id = 1, Name = "Running" },
                 new HorseType { Id = 2, Name = "Cargo" },

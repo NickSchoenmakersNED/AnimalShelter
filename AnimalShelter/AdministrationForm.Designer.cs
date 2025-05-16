@@ -56,6 +56,10 @@
             this.BtnDeleteLocation = new System.Windows.Forms.Button();
             this.BtnLocationAnimals = new System.Windows.Forms.Button();
             this.BtnShowAllAnimals = new System.Windows.Forms.Button();
+            this.CmdSpecialField1 = new System.Windows.Forms.ComboBox();
+            this.LblSpecialField2 = new System.Windows.Forms.Label();
+            this.TxbSpecialField2 = new System.Windows.Forms.TextBox();
+            this.BtnClear = new System.Windows.Forms.Button();
             this.GrbManage.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -66,7 +70,10 @@
             this.CmbAnimalType.FormattingEnabled = true;
             this.CmbAnimalType.Items.AddRange(new object[] {
             "Cat",
-            "Dog"});
+            "Dog",
+            "Horse",
+            "Parrot",
+            "Lizard"});
             this.CmbAnimalType.Location = new System.Drawing.Point(17, 53);
             this.CmbAnimalType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CmbAnimalType.Name = "CmbAnimalType";
@@ -139,9 +146,9 @@
             this.LblSpecialField1.AutoSize = true;
             this.LblSpecialField1.Location = new System.Drawing.Point(6, 22);
             this.LblSpecialField1.Name = "LblSpecialField1";
-            this.LblSpecialField1.Size = new System.Drawing.Size(104, 20);
+            this.LblSpecialField1.Size = new System.Drawing.Size(125, 20);
             this.LblSpecialField1.TabIndex = 10;
-            this.LblSpecialField1.Text = "Bad Behavior";
+            this.LblSpecialField1.Text = "LblSpecialField1";
             // 
             // TxbSpecialField1
             // 
@@ -152,6 +159,7 @@
             // 
             // GrbManage
             // 
+            this.GrbManage.Controls.Add(this.BtnClear);
             this.GrbManage.Controls.Add(this.groupBox1);
             this.GrbManage.Controls.Add(this.TxbDateOfBirth);
             this.GrbManage.Controls.Add(this.LblDateOfBirth);
@@ -172,6 +180,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.TxbSpecialField2);
+            this.groupBox1.Controls.Add(this.LblSpecialField2);
+            this.groupBox1.Controls.Add(this.CmdSpecialField1);
             this.groupBox1.Controls.Add(this.LblSpecialField1);
             this.groupBox1.Controls.Add(this.TxbSpecialField1);
             this.groupBox1.Location = new System.Drawing.Point(663, 15);
@@ -346,6 +357,43 @@
             this.BtnShowAllAnimals.UseVisualStyleBackColor = true;
             this.BtnShowAllAnimals.Click += new System.EventHandler(this.BtnShowAllAnimals_Click);
             // 
+            // CmdSpecialField1
+            // 
+            this.CmdSpecialField1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CmdSpecialField1.FormattingEnabled = true;
+            this.CmdSpecialField1.Location = new System.Drawing.Point(6, 47);
+            this.CmdSpecialField1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.CmdSpecialField1.Name = "CmdSpecialField1";
+            this.CmdSpecialField1.Size = new System.Drawing.Size(145, 28);
+            this.CmdSpecialField1.TabIndex = 17;
+            // 
+            // LblSpecialField2
+            // 
+            this.LblSpecialField2.AutoSize = true;
+            this.LblSpecialField2.Location = new System.Drawing.Point(154, 22);
+            this.LblSpecialField2.Name = "LblSpecialField2";
+            this.LblSpecialField2.Size = new System.Drawing.Size(125, 20);
+            this.LblSpecialField2.TabIndex = 18;
+            this.LblSpecialField2.Text = "LblSpecialField2";
+            // 
+            // TxbSpecialField2
+            // 
+            this.TxbSpecialField2.Location = new System.Drawing.Point(158, 45);
+            this.TxbSpecialField2.Name = "TxbSpecialField2";
+            this.TxbSpecialField2.Size = new System.Drawing.Size(146, 26);
+            this.TxbSpecialField2.TabIndex = 19;
+            // 
+            // BtnClear
+            // 
+            this.BtnClear.Location = new System.Drawing.Point(465, 230);
+            this.BtnClear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BtnClear.Name = "BtnClear";
+            this.BtnClear.Size = new System.Drawing.Size(191, 35);
+            this.BtnClear.TabIndex = 17;
+            this.BtnClear.Text = "Clear";
+            this.BtnClear.UseVisualStyleBackColor = true;
+            this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
+            // 
             // AdministrationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -408,6 +456,10 @@
         private System.Windows.Forms.Button BtnDeleteLocation;
         private System.Windows.Forms.Button BtnLocationAnimals;
         private System.Windows.Forms.Button BtnShowAllAnimals;
+        private System.Windows.Forms.ComboBox CmdSpecialField1;
+        private System.Windows.Forms.Label LblSpecialField2;
+        private System.Windows.Forms.TextBox TxbSpecialField2;
+        private System.Windows.Forms.Button BtnClear;
     }
 }
 

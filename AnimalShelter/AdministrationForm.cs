@@ -38,7 +38,15 @@ namespace AnimalShelter
 
             LbxLocations.DataSource = locations;
             LbxLocations.DisplayMember = "Name"; 
-            LbxLocations.ValueMember = "ID";    
+            LbxLocations.ValueMember = "ID";
+
+
+            CmdSpecialField1.DataSource = context.Animals
+                .OfType<Horse>()
+                .Where(h => !h.IsReserved)
+                .Select(h => h.Type)
+                .Distinct()
+                .ToList();
         }
 
         private void RefreshListboxes()
@@ -118,23 +126,89 @@ namespace AnimalShelter
 
             Animal newAnimal = null;
 
-            if (animalType == "dog")
+            switch (animalType)
             {
-                try
-                {
+                case "dog":
                     string[] parts = TxbSpecialField1.Text.Split('-');
-                    SimpleDate lastWalk = new SimpleDate(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
-                    newAnimal = new Dog(dateOfBirth, name, lastWalk);
-                }
-                catch(Exception ex) { 
-                    MessageBox.Show("Invalid walk date format."); 
-                    return; 
-                }
-            }
-            else if (animalType == "cat")
-            {
-                string badHabits = TxbSpecialField1.Text;
-                newAnimal = new Cat(dateOfBirth, name, badHabits);
+                    SimpleDate lastWalk;
+
+                    try
+                    {
+                        lastWalk = new SimpleDate(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
+                    }
+                    catch (ArgumentOutOfRangeException ex)
+                    {
+                        MessageBox.Show("One or more date values are out of range. Please ensure the day, month, and year are valid numbers.");
+                        return;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        MessageBox.Show($"Invalid date: {ex.Message}");
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"An unexpected error occurred: {ex.Message}");
+                        return;
+                    }
+                    string input = TxbSpecialField2.Text.ToLower();
+
+                    bool isGuideDog;
+                    if (input == "yes" || input == "true")
+                    {
+                        isGuideDog = true;
+                    }
+                    else
+                    {
+                        isGuideDog = false;
+                    }
+                    Dog dog = new Dog(dateOfBirth, name, lastWalk)
+                    {
+                        GuideDog = isGuideDog
+                    };
+                    newAnimal = dog;
+                    break;
+
+                case "cat":
+                    newAnimal = new Cat(dateOfBirth, name, TxbSpecialField1.Text);
+                    break;
+
+                case "horse":
+                    if (CmdSpecialField1.SelectedItem is HorseType selectedType)
+                    {
+                        newAnimal = new Horse(dateOfBirth, name, selectedType);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a valid horse type.");
+                        return;
+                    }
+                    break;
+
+                case "lizard":
+                    string climate = TxbSpecialField1.Text;
+                    string species = TxbSpecialField2.Text;
+                    newAnimal = new Lizard(dateOfBirth, name, climate, species);
+                    break;
+
+                case "parrot":
+                    bool canTalk;
+                    input = TxbSpecialField1.Text.ToLower();
+
+                    if (input == "yes" || input == "true")
+                    {
+                        canTalk = true;
+                    }
+                    else
+                    {
+                        canTalk = false;
+                    }
+                    newAnimal = new Parrot(dateOfBirth, name, canTalk);
+                    break;
+
+                default:
+                    MessageBox.Show("Invalid animal type selected.");
+                    return;
             }
 
             admin.AddAnimal(newAnimal);
@@ -198,7 +272,51 @@ namespace AnimalShelter
 
         private void CmbAnimalType_SelectedValueChanged(object sender, EventArgs e)
         {
-            LblSpecialField1.Text = CmbAnimalType.Text == "Dog" ? "Last walked" : "Bad behaviour";
+            switch (CmbAnimalType.Text)
+            {
+                case "Dog":
+                    LblSpecialField1.Text = "Last walked";
+                    TxbSpecialField1.Visible = true;
+                    CmdSpecialField1.Visible = false;
+                    LblSpecialField2.Text = "Guidedog";
+                    LblSpecialField2.Visible = true;
+                    TxbSpecialField2.Visible = true;
+                    break;
+
+                case "Cat":
+                    LblSpecialField1.Text = "Bad behavior";
+                    TxbSpecialField1.Visible = true;
+                    CmdSpecialField1.Visible = false;
+                    LblSpecialField2.Visible = false;
+                    TxbSpecialField2.Visible = false;
+                    break;
+
+                case "Horse":
+                    LblSpecialField1.Text = "Type";
+                    TxbSpecialField1.Visible = false;
+                    CmdSpecialField1.Visible = true;
+                    LblSpecialField2.Visible = false;
+                    TxbSpecialField2.Visible = false;
+                    break;
+
+                case "Lizard":
+                    LblSpecialField1.Text = "Climate";
+                    TxbSpecialField1.Visible = true;
+                    CmdSpecialField1.Visible = false;
+                    LblSpecialField2.Text = "Species";
+                    LblSpecialField2.Visible = true;
+                    TxbSpecialField2.Visible = true;
+                    break;
+
+                case "Parrot":
+                    LblSpecialField1.Text = "Can talk";
+                    TxbSpecialField1.Visible = true;
+                    CmdSpecialField1.Visible = false;
+                    LblSpecialField2.Visible = false;
+                    TxbSpecialField2.Visible = false;
+                    break;
+            }
+
         }
 
         private void BtnCalculateAge_Click(object sender, EventArgs e)
@@ -211,6 +329,15 @@ namespace AnimalShelter
             }
         }
 
+
+        // values to add
+        //CmbAnimalType.SelectedItem = null;
+        //TxbAnimalName.Text = null;
+        //TxbDateOfBirth.Text = null;
+        //CmdSpecialField1.SelectedItem = null; (is for horse)
+        //TxbSpecialField1.Text = null; (is for all but horse)
+        //TxbSpecialField2.Text = null; (is for lizard)
+
         private void LbxAnimalsNotReserved_SelectedValueChanged(object sender, EventArgs e)
         {
             LbxAnimalsReserved.SelectedValueChanged -= LbxAnimalsReserved_SelectedValueChanged;
@@ -219,10 +346,7 @@ namespace AnimalShelter
             Animal selected = LbxAnimalsReserved.SelectedItem as Animal ?? LbxAnimalsNotReserved.SelectedItem as Animal;
             if (LbxAnimalsNotReserved.SelectedItems.Count == 1)
             {
-                CmbAnimalType.Text = selected.GetType().Name;
-                TxbAnimalName.Text = selected.Name;
-
-
+                LoadAnimal(selected);
             }
             LbxAnimalsReserved.SelectedValueChanged += LbxAnimalsReserved_SelectedValueChanged;
         }
@@ -231,6 +355,12 @@ namespace AnimalShelter
         {
             LbxAnimalsNotReserved.SelectedValueChanged -= LbxAnimalsNotReserved_SelectedValueChanged;
             LbxAnimalsNotReserved.ClearSelected();
+
+            Animal selected = LbxAnimalsNotReserved.SelectedItem as Animal ?? LbxAnimalsReserved.SelectedItem as Animal;
+            if (LbxAnimalsReserved.SelectedItems.Count == 1)
+            {
+                LoadAnimal(selected);
+            }
             LbxAnimalsNotReserved.SelectedValueChanged += LbxAnimalsNotReserved_SelectedValueChanged;
         }
 
@@ -251,8 +381,6 @@ namespace AnimalShelter
             string name = TxbLocation.Text;
             admin.AddLocation(name);
             TxbLocation.Clear();
-
-            MessageBox.Show("Location added.");
 
             List<Location> locations = admin.LoadLocations();
 
@@ -277,7 +405,6 @@ namespace AnimalShelter
             locations = admin.LoadLocations();
             LbxLocations.DataSource = locations;
         }
-
         private void BtnChangeLocation_Click(object sender, EventArgs e)
         {
             List<Location> locations = admin.LoadLocations();
@@ -294,15 +421,11 @@ namespace AnimalShelter
 
             animal.LocationId = selectedId;
 
-            MessageBox.Show(animal.LocationId.ToString());
-
             context.SaveChanges();
         }
-
         private void BtnLocationAnimals_Click(object sender, EventArgs e)
         {
             var selectedLocationId = Convert.ToInt32(LbxLocations.SelectedValue);
-            MessageBox.Show(selectedLocationId.ToString());
             LbxAnimalsNotReserved.DataSource = context.Animals
                 .Include(a => (a as Horse).Type)
                 .Where(a => !a.IsReserved && a.LocationId == selectedLocationId)
@@ -313,7 +436,6 @@ namespace AnimalShelter
                 .Where(a => a.IsReserved && a.LocationId  == selectedLocationId)
                 .ToList();
         }
-
         private void BtnShowAllAnimals_Click(object sender, EventArgs e)
         {
             LbxAnimalsNotReserved.DataSource = context.Animals
@@ -326,5 +448,49 @@ namespace AnimalShelter
                 .Where(a => a.IsReserved)
                 .ToList();
         }
+
+        private void BtnClear_Click(object sender, EventArgs e)
+        {
+            CmbAnimalType.SelectedItem = null;
+            TxbAnimalName.Text = null;
+            TxbDateOfBirth.Text = null;
+            CmdSpecialField1.SelectedItem = null;
+            TxbSpecialField1.Text = null;
+            TxbSpecialField2.Text = null;
+        }
+        private void LoadAnimal(Animal selected)
+        {
+            if (selected == null) return;
+
+            CmbAnimalType.Text = selected.GetType().Name;
+            TxbAnimalName.Text = selected.Name;
+            TxbDateOfBirth.Text = selected.DateOfBirth.ToString();
+
+            switch (selected)
+            {
+                case Dog dog:
+                    TxbSpecialField1.Text = dog.LastWalkDate.ToString();
+                    TxbSpecialField2.Text = dog.GuideDog.ToString();
+                    break;
+
+                case Cat cat:
+                    TxbSpecialField1.Text = cat.BadHabits.ToString();
+                    break;
+
+                case Horse horse:
+                    CmdSpecialField1.Text = horse.Type.ToString();
+                    break;
+
+                case Lizard lizard:
+                    TxbSpecialField1.Text = lizard.Climate.ToString();
+                    TxbSpecialField2.Text = lizard.Species.ToString();
+                    break;
+
+                case Parrot parrot:
+                    TxbSpecialField1.Text = parrot.CanTalk.ToString();
+                    break;
+            }
+        }
+
     }
 }
